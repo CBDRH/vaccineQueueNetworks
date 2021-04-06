@@ -1,0 +1,13 @@
+name: queueSim
+title: queueSim
+username:
+account: cbdrh
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3895697
+bundleId: 4435281
+url: https://cbdrh.shinyapps.io/queueSim/
+when: 1617667669.14918
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: R/prepDefaultData.R
