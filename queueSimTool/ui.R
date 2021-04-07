@@ -19,14 +19,18 @@ sidebar <- dashboardSidebar(
 
     conditionalPanel(condition="input.sidebar == 'massVac'",
                      hr(),
-                     h4('Control Panel'),
+                     div(style="text-align:center",
+                         h4(span(icon("wrench"),'Control panel'))
+                     ),
                      numericInput("nSims1", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim1", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef")
                      ),
     
     conditionalPanel(condition="input.sidebar == 'gpClinic'",
                      hr(),
-                     h4('Control Panel'),
+                     div(style="text-align:center",
+                        h4(span(icon("wrench"),'Control panel'))
+                        ),
                      numericInput("nSims2", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim2", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00a65a; border-color: #00a65a")
     )
@@ -161,7 +165,7 @@ body <- dashboardBody(
                         ) # Closes first box 
                     ), # Closes fluidRow
 
-                        
+            HTML("<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'><img alt='Creative Commons Licence' style='border-width:0' src='https://i.creativecommons.org/l/by-nc/4.0/88x31.png' /></a><br />This work is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>Creative Commons Attribution-NonCommercial 4.0 International License</a>.")
         ) # Closes fluidPage
                 
     ), # closes massVac tabItem
@@ -295,17 +299,50 @@ body <- dashboardBody(
                                    
                             ) # Closes tabBox
                         ) # Closes first box 
-                    ) # Closes fluidRow
+                    ), # Closes fluidRow
                     
-                    
+                    HTML("<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'><img alt='Creative Commons Licence' style='border-width:0' src='https://i.creativecommons.org/l/by-nc/4.0/88x31.png' /></a><br />This work is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>Creative Commons Attribution-NonCommercial 4.0 International License</a>.") 
                 ) # Closes fluidPage
                 
-                
-                
-                
-                
-                ) # Closes gpclinic tabItem
+                ), # Closes gpclinic tabItem
         
+
+                # Mass vaccination hub
+                tabItem(tabName = "info", 
+                        fluidPage(
+                            
+                            h4('About queueing network models'),
+                            p('The queueing network models implmented in this applet are estimated using the queuecomputer package. More information on this pakage can be found at the links below.'),
+                            p(tags$a(href="https://www.jstatsoft.org/article/view/v095i05",
+                                     icon("file-pdf"), target="_blank", "Ebert, A., Wu, P., Mengersen, K., & Ruggeri, F. (2020). Computationally Efficient Simulation of Queues: The R Package queuecomputer. Journal of Statistical Software, 95(5), 1 - 29. doi:http://dx.doi.org/10.18637/jss.v095.i05")),
+                            
+                            hr(),
+                            
+                            h4('Related links'),
+                            p(tags$a(href="https://github.com/CBDRH/vaccineQueue/blob/e70a227bd5b50d74e086925efee4295cbf8bb6d1/Preprint/Preprint.pdf",
+                                     icon("file-pdf"), target="_blank", "The preprint article published on medRxiv")),
+                            
+                            hr(),
+                            
+                            h4('Source code'),
+                            p('The source code for this application can be found at https://github.com/CBDRH/vaccineQueueNetworks'),
+                            p('Bug reports and feature requests can be submitted through the GitHub issues page https://github.com/CBDRH/vaccineQueueNetworks/issues'),
+                            
+                            hr(),
+                            
+                            h4('Acknowledgements'),
+                            p('This research was supported by the generous assistance of Ian Sharp, philanthropic supporter of UNSW research, 
+                            and by a research seed grant provided by the Sydney Partnership for Health, Education, Research and Enterprise (SPHERE) 
+                            Infectious diseases, Immunity and Inflammation (Triple-I) Clinical Academic Group.'),
+                            p('The Wangal, Bedegal and Gadigal people of the Eora Nation are the traditional owners of the land on 
+                              which this work was undertaken. We acknowledge and pay our respects to their Elders, both past, present and emerging.'),
+
+                            br(),
+                            HTML("<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'><img alt='Creative Commons Licence' style='border-width:0' src='https://i.creativecommons.org/l/by-nc/4.0/88x31.png' /></a><br />This work is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>Creative Commons Attribution-NonCommercial 4.0 International License</a>.")     
+                        ), # Closes fluidPage
+                    
+                )
+
         ) # Closes tabItems
     
 ) # closes dashboardBody

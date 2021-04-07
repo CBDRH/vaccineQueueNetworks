@@ -63,6 +63,8 @@
 #                         axis.ticks.x=element_blank(),
 #                         text = element_text(size=14))
 # 
+# save(throughputP1, file = here::here('queueSimTool/www/throughputP1'))
+# 
 # utilisationP1 <- utilTimes1 %>%
 #                   ggplot(aes(y = station, x = util)) +
 #                   annotate('rect', xmin = 0.5, xmax = 0.7, ymin = 0.5, ymax = 5.5, fill = colorHex1, alpha = 0.2) +
@@ -70,6 +72,8 @@
 #                   scale_y_discrete(NULL, limits = rev(levels(utilTimes1$station))) +
 #                   scale_x_continuous("Average staff utilisation factor", labels = seq(0,1,.2), limits = c(0,1), breaks = seq(0,1,.2)) +
 #                   theme(text = element_text(size=14))
+# 
+# save(utilisationP1, file = here::here('queueSimTool/www/utilisationP1'))
 # 
 # processingP1 <- ggplot(queueTimes1, aes(y = station, x = mins)) +
 #                   geom_boxplot() +
