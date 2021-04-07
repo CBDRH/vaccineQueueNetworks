@@ -312,7 +312,7 @@ body <- dashboardBody(
                         fluidPage(
                             
                             h4('About queueing network models'),
-                            p('The queueing network models implmented in this applet are estimated using the queuecomputer package. More information on this pakage can be found at the links below.'),
+                            p('The queueing network models implmented in this applet are estimated using the queuecomputer package. More information on this package can be found at the links below.'),
                             p(tags$a(href="https://www.jstatsoft.org/article/view/v095i05",
                                      icon("file-pdf"), target="_blank", "Ebert, A., Wu, P., Mengersen, K., & Ruggeri, F. (2020). Computationally Efficient Simulation of Queues: The R Package queuecomputer. Journal of Statistical Software, 95(5), 1 - 29. doi:http://dx.doi.org/10.18637/jss.v095.i05")),
                             
@@ -325,15 +325,15 @@ body <- dashboardBody(
                             hr(),
                             
                             h4('Source code'),
-                            p('The source code for this application can be found at https://github.com/CBDRH/vaccineQueueNetworks'),
-                            p('Bug reports and feature requests can be submitted through the GitHub issues page https://github.com/CBDRH/vaccineQueueNetworks/issues'),
+                            p('The source code for this application can be found at ', tags$a(href="https://github.com/CBDRH/vaccineQueueNetworks", icon("github"), target="_blank", "https://github.com/CBDRH/vaccineQueueNetworks")),
+                            p('Bug reports and feature requests can be submitted through the GitHub issues page ',  tags$a(href="https://github.com/CBDRH/vaccineQueueNetworks/issues", icon("github"), target="_blank", "https://github.com/CBDRH/vaccineQueueNetworks/issues")),
                             
                             hr(),
                             
                             h4('Acknowledgements'),
                             p('This research was supported by the generous assistance of Ian Sharp, philanthropic supporter of UNSW research, 
-                            and by a research seed grant provided by the Sydney Partnership for Health, Education, Research and Enterprise (SPHERE) 
-                            Infectious diseases, Immunity and Inflammation (Triple-I) Clinical Academic Group.'),
+                            and by a research seed grant provided by the', tags$a(href="https://www.thesphere.com.au/work/infectious-disease-immunity-and-inflammation-triple-i", target="_blank",  "Sydney Partnership for Health, Education, Research and Enterprise (SPHERE) 
+                            Infectious diseases, Immunity and Inflammation (Triple-I) Clinical Academic Group"), '.'),
                             p('The Wangal, Bedegal and Gadigal people of the Eora Nation are the traditional owners of the land on 
                               which this work was undertaken. We acknowledge and pay our respects to their Elders, both past, present and emerging.'),
 
