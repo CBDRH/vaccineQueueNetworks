@@ -1,13 +1,14 @@
 
+
 # Header
-header <- dashboardHeader(title = 'Queue Simulation Tool',
+header <- dashboardHeader(title =  "Vaccination facility simulator",
+                          titleWidth = 300,
                           tags$li(class="dropdown",
                                   tags$a(href='https://github.com/CBDRH/', icon('github'), "Source Code", target="_blank")),
                           tags$li(class="dropdown",
                                   tags$a(href='https://cbdrh.med.unsw.edu.au/study-with-us',
                                          icon('graduation-cap'), "Study with us", target="_blank"))
                           )
-
 
 # Sidebar
 sidebar <- dashboardSidebar(
@@ -33,7 +34,13 @@ sidebar <- dashboardSidebar(
                         ),
                      numericInput("nSims2", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim2", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00a65a; border-color: #00a65a")
-    )
+    ),
+    
+    hr(),
+    
+    box(background = "yellow",
+        height = '100', width = '200',
+        tags$img(src='unsw_logo.png',height='70',width='165'))
     
 ) # closes dashboardSidebar
 
@@ -41,6 +48,8 @@ sidebar <- dashboardSidebar(
 # Body
 body <- dashboardBody(
     
+    skin = "yellow", 
+
     tabItems(
         
         # Mass vaccination hub
@@ -311,17 +320,37 @@ body <- dashboardBody(
                 tabItem(tabName = "info", 
                         fluidPage(
                             
+                            h4('Contributors'),
+                            p('This applet was created by'),
+                            tags$ul(
+                                tags$li("Mark Hanly"),
+                                tags$li("Oisín Fitzgerald"),
+                                tags$li(tags$a(href="https://timchurches.github.io/", 
+                                               icon="blog", target="_blank",
+                                               "Tim Churches"))
+                            ),
+                            
+                            hr(),
+                            
                             h4('About queueing network models'),
-                            p('The queueing network models implmented in this applet are estimated using the queuecomputer package. More information on this package can be found at the links below.'),
+                            p('The queueing network models implmented in this applet are estimated using the ',
+                            tags$code('queuecomputer'),
+                            ' package. More information on this package can be found at the links below.'),
                             p(tags$a(href="https://www.jstatsoft.org/article/view/v095i05",
                                      icon("file-pdf"), target="_blank", "Ebert, A., Wu, P., Mengersen, K., & Ruggeri, F. (2020). Computationally Efficient Simulation of Queues: The R Package queuecomputer. Journal of Statistical Software, 95(5), 1 - 29. doi:http://dx.doi.org/10.18637/jss.v095.i05")),
                             
                             hr(),
                             
-                            h4('Related links'),
-                            p(tags$a(href="https://github.com/CBDRH/vaccineQueue/blob/e70a227bd5b50d74e086925efee4295cbf8bb6d1/Preprint/Preprint.pdf",
-                                     icon("file-pdf"), target="_blank", "The preprint article published on medRxiv")),
-                            
+                            h4('Related preprint scientific paper'),
+                            p("Modelling vaccination capacity at mass vaccination hubs and general practice clinics.",
+                              br(),
+                              "Mark J Hanly, Tim Churches, Oisín Fitzgerald, Ian Caterson, Chandini Raina MacIntyre, Louisa Jorm",
+                              br(),
+                              "medRxiv 2021.04.07.21255067; doi: ",
+                              tags$a(href="https://doi.org/10.1101/2021.04.07.21255067",
+                                     icon("file-pdf"), target="_blank", 
+                                     "https://doi.org/10.1101/2021.04.07.21255067")),
+
                             hr(),
                             
                             h4('Source code'),
@@ -349,4 +378,6 @@ body <- dashboardBody(
 
 
 # Put it all together
-dashboardPage(header, sidebar, body)
+dashboardPage(header, 
+              sidebar, 
+              body)
