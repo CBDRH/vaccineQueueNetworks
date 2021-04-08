@@ -12,43 +12,47 @@ header <- dashboardHeader(title =  "Vaccination facility simulator",
 
 # Sidebar
 sidebar <- dashboardSidebar(
+        br(),
+        div(style="text-align:center",
+            tags$img(src='unsw_logo_reverse.png',height='70',width='165')
+        ),
+        
+        hr(),
+        div(style="text-align:center",
+            h4(span(icon("project-diagram"),'Vaccination mode'))
+            ),
+        br(),    
     sidebarMenu(id = "sidebar",
                 menuItem("Mass Vaccination Hub", tabName = "massVac", icon = icon("hospital-alt")),
-                menuItem("GP Clinic", tabName = "gpClinic", icon = icon("clinic-medical")),
-                menuItem("About this tool", tabName = "info", icon = icon("info"))
-                ),    textOutput('test'),
-
+                menuItem("GP Clinic", tabName = "gpClinic", icon = icon("clinic-medical"))
+                ), 
+    
+                br(),
+    
+    
     conditionalPanel(condition="input.sidebar == 'massVac'",
-                     hr(),
-                     div(style="text-align:center",
-                         h4(span(icon("wrench"),'Control panel'))
-                     ),
+                     #h4(span(icon("wrench"),'Control panel')),
                      numericInput("nSims1", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim1", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef")
                      ),
     
     conditionalPanel(condition="input.sidebar == 'gpClinic'",
-                     hr(),
-                     div(style="text-align:center",
-                        h4(span(icon("wrench"),'Control panel'))
-                        ),
+                    #h4(span(icon("wrench"),'Control panel')),
                      numericInput("nSims2", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim2", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00a65a; border-color: #00a65a")
     ),
     
     hr(),
     
-    box(background = "yellow",
-        height = '100', width = '200',
-        tags$img(src='unsw_logo.png',height='70',width='165'))
+    sidebarMenu(id = "sidebar", menuItem("About this tool", tabName = "info", icon = icon("info")))  
+    
+
     
 ) # closes dashboardSidebar
 
 
 # Body
 body <- dashboardBody(
-    
-    skin = "yellow", 
 
     tabItems(
         

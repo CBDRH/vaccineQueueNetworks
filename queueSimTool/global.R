@@ -19,24 +19,26 @@ status2 <- 'success'
 # Functions
 source_files <- c("helperFunctions.R", "arenaModel.R", "gpModel.R")
 for (source_file in source_files) {
-  source(paste(here::here('queueSimTool/R/'), source_file, sep = ""))
+  source(paste('R/', source_file, sep = ""))
 }
 
 
 # Default data
 source_objects <- c("throughputP1", "utilisationP1", "processingP1", "throughputP2", "utilisationP2", "processingP2", 
                     "infoThroughPut1", "infoThroughPut2", "infoProcessTime1", "infoProcessTime2")
-if (file.exists(paste(here::here('queueSimTool/www/'), source_object[1], sep = ""))) {
+
+if (file.exists(paste('www/', source_objects[1], sep = ""))) {
   
   for (source_object in source_objects) {
-    load(paste(here::here('queueSimTool/www/'), source_object, sep = ""))
+    load(paste('www/', source_object, sep = ""))
   }
 } else {
-  source(paste(here::here('queueSimTool/R/'), 'prepDefaultData.R', sep = ""))
+  source(paste('R/', 'prepDefaultData.R', sep = ""))
 }
 
-if (!file.exists(paste(here::here('queueSimTool/www/'), "unsw_logo.png", sep = ""))) {
-  file.copy(from=paste(here::here('queueSimTool/assets/'), "unsw_logo.png", sep = ""),
-            to=here::here('queueSimTool/www/'))
-}
+
+# if (!file.exists(paste('www/', "unsw_logo_reverse.png", sep = ""))) {
+#   file.copy(from=paste('assets/', "unsw_logo_reverse.png", sep = ""),
+#             to='www/')
+# }
 
