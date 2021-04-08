@@ -1,5 +1,5 @@
 # Only run this once, chnage FALSE to TRUE below
-run_it <- TRUE
+run_it <- FALSE
 
 if (run_it) { 
 
