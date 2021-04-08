@@ -6,6 +6,7 @@ library(visNetwork)
 library(purrr)
 library(shinyTime)
 library(lubridate)
+library(rintrojs)
 
 # Define theme colors
 color1 <- "aqua"
@@ -36,9 +37,4 @@ if (file.exists(paste('www/', source_objects[1], sep = ""))) {
   source(paste('R/', 'prepDefaultData.R', sep = ""))
 }
 
-
-# if (!file.exists(paste('www/', "unsw_logo_reverse.png", sep = ""))) {
-#   file.copy(from=paste('assets/', "unsw_logo_reverse.png", sep = ""),
-#             to='www/')
-# }
 

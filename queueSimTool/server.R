@@ -1,8 +1,12 @@
 
 # Define server logic  
 shinyServer(function(input, output, session) {
-
     
+    # initiate hints on startup
+    observe({
+        if(input$hintsOn1==1){hintjs(session, options = list("hintButtonLabel"="Ok"))}
+    })
+
     ###############################################
             ### Mass vaccination ###
     ###############################################
@@ -490,12 +494,12 @@ shinyServer(function(input, output, session) {
 
 
     output$infoHealthStaff1 <- renderText({
-        prettyNum(input$nRsi1 + input$nEnt1 + input$nReg1 + input$nAss1 + input$nVac1 + input$nObs1, big.mark=",")
+        prettyNum(input$nRsi1 + input$nEnt1 + input$nReg1 + input$nAss1 + input$nVac1, big.mark=",")
     })
 
 
     output$infoSupportStaff1 <- renderText({
-        prettyNum(input$nAdm1 + input$nMar1 + input$nSec1 + input$nCln1 + input$nCat1 + input$nOth1, big.mark=",")
+        prettyNum(input$nObs1 + input$nAdm1 + input$nMar1 + input$nSec1 + input$nCln1 + input$nCat1 + input$nOth1, big.mark=",")
     })
     
     
@@ -901,15 +905,20 @@ shinyServer(function(input, output, session) {
     
     
     output$infoHealthStaff2 <- renderText({
-        prettyNum(input$nRsi2 + input$nReg2 + + input$nVac2 + input$nObs2, big.mark=",")
+        prettyNum(input$nRsi2 + input$nReg2 + + input$nVac2, big.mark=",")
     })
     
     
     output$infoSupportStaff2 <- renderText({
-        prettyNum(input$nAdm2 + input$nMar2 + input$nSec2 + input$nCln2 + input$nCat2 + input$nOth2, big.mark=",")
+        prettyNum(input$nObs2 + input$nAdm2 + input$nMar2 + input$nSec2 + input$nCln2 + input$nCat2 + input$nOth2, big.mark=",")
     })
     
-    
-    
+    # start introjs when button is pressed with custom options and events
+    observeEvent(input$help1,
+                 introjs(session, options = list("nextLabel"="Next",
+                                                 "prevLabel"="Previous",
+                                                 "skipLabel"="Done"))
+    )
+
 
 })
