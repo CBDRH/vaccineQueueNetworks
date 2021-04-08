@@ -35,3 +35,8 @@ if (file.exists(paste(here::here('queueSimTool/www/'), source_object[1], sep = "
   source(paste(here::here('queueSimTool/R/'), 'prepDefaultData.R', sep = ""))
 }
 
+if (!file.exists(paste(here::here('queueSimTool/www/'), "unsw_logo.png", sep = ""))) {
+  file.copy(from=paste(here::here('queueSimTool/assets/'), "unsw_logo.png", sep = ""),
+            to=here::here('queueSimTool/www/'))
+}
+
