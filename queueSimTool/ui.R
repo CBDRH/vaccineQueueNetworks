@@ -12,23 +12,18 @@ header <- dashboardHeader(title =  "Vaccination facility simulator",
 
 # Sidebar
 sidebar <- dashboardSidebar(
-    
-    
-    
-    # To enable rintrojs
-    introjsUI(),
 
-        br(),
-        div(style="text-align:center",
-            tags$img(src='unsw_logo_reverse.png',height='70',width='165')
-        ),
+
+    div(
+            style="text-align:center; background: #FFF200; padding: 25px",
+            tags$img(src='unsw_logo.png',height='70',width='165')
+    ),
     
-    hr(),
-    
+
     introBox(
         sidebarMenu(id = "sidebar", menuItem("About this app", tabName = "info", icon = icon("info"))),  
         data.step = 13,
-        data.intro = 'To find out more about the underlying queue network models implemented in this app, check out the links here.'),
+        data.intro = info_tab_text),
 
 
             # div(style="text-align:center",
@@ -41,8 +36,9 @@ sidebar <- dashboardSidebar(
                 menuItem("GP Clinic", tabName = "gpClinic", icon = icon("clinic-medical"))
                 ),
             data.step = 1,
-            data.intro = 'The app allows you to run simulations for two distinct approaches to vaccine delivery. Here you can choose between two models: (i) a mass vaccination hub or (ii) a GP clinic model.',
-            data.position = 'right'
+            data.intro = sidebar_overview__text,
+            data.position = 'right',
+            data.hint = sidebar_overview__text
         ),
         helpText('Choose a vaccination delivery mode'),
         br(),
@@ -52,8 +48,8 @@ sidebar <- dashboardSidebar(
                      numericInput("nSims1", "Number of simulations", min = 1, max = 100, value = 20),
                      actionButton(inputId = "runSim1", "Run", icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef"),
                      hr(),
-                     actionButton("help1", "Guided introduction", icon = icon("question-circle"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef"),
-                     actionButton("hintsOn1", "Turn on hints", icon = icon("paperclip"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef")
+                     actionButton("help1", "Guided introduction", icon = icon("question-circle"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef") #,
+                     # actionButton("hintsOn1", "Turn on hints", icon = icon("paperclip"), width = '80%', style = "color: #fff; background-color: #00c0ef; border-color: #00c0ef")
                      ),
     
     conditionalPanel(condition="input.sidebar == 'gpClinic'",
@@ -63,10 +59,9 @@ sidebar <- dashboardSidebar(
     ),
     
     data.step = 2,
-    data.intro = 'Here you can set the number of simulations. Higher values will result in a longer 
-                  running time but even 100 simulations should take less than a minute. Smaller values are fine, 
-                  especially while you are experimenting.',
-    data.position = 'right'
+    data.intro = number_of_simulations_text,
+    data.position = 'right',
+    data.hint = number_of_simulations_text
     )
     
 ) # closes dashboardSidebar
@@ -74,6 +69,8 @@ sidebar <- dashboardSidebar(
 
 # Body
 body <- dashboardBody(
+
+    introjsUI(), # To enable rintrojs
 
     tabItems(
         
@@ -90,8 +87,7 @@ body <- dashboardBody(
                                         "Median number of vaccinations", uiOutput("infoThroughPut1"), icon = icon("syringe"), color = color1
                                 ),
                                 data.step = 4,
-                                data.intro = 'This tells you the likely number of vaccinations that could be administered over the 
-                                            specified clinic time.',
+                                data.intro = median_number_of_vaccinations_text,
                                 data.position = 'top'
                             ),
                             introBox(
@@ -99,7 +95,7 @@ body <- dashboardBody(
                                         "Median process time", uiOutput("infoProcessTime1"), icon = icon("clock"), color = color1
                                 ),
                                 data.step = 5,
-                                data.intro = 'This tells you the median time from start to finish for a person coming to be vaccinated.',
+                                data.intro = median_process_time_text,
                                 data.position = 'top'
                             ),
                             introBox(
@@ -107,8 +103,7 @@ body <- dashboardBody(
                                         "Healthcare staff", uiOutput("infoHealthStaff1"), icon = icon("user-md"), color = color1
                                 ),
                                 data.step = 6,
-                                data.intro = 'This is the number of healthcare staff that are involved in the queue process. This doesn\'t 
-                                             include other support staff neccessary to run the clinic.',
+                                data.intro = healthcare_staff_text,
                                 data.position = 'top'
                             ),
                             introBox(
@@ -116,16 +111,15 @@ body <- dashboardBody(
                                         "Support staff", uiOutput("infoSupportStaff1"), icon = icon("users"), color = color1
                                 ),
                                 data.step = 7,
-                                data.intro = 'This is the number of additional support staff to run the clinic. This figure won\'t affect
-                                              the model estimates but it is important to consider for clinic planning',
+                                data.intro = support_staff_text,
                                 data.position = 'top'        
                             )
                         ),
                         
                         data.step = 3,
-                        data.intro = "This is a high level summary of the queue performance and assumed staff numbers. 
-                                            These figures will update automatically as you run new simulations.",
-                        data.position = 'top'
+                        data.intro = info_boxes_text,
+                        data.position = 'top',
+                        data.hint = info_boxes_hint_text
                     ),
                     introBox(
                     fluidRow(
@@ -135,24 +129,27 @@ body <- dashboardBody(
                             introBox(
                                 box(width = 4, title = 'Number of vaccinations administered', status = status1, solidHeader = TRUE, plotOutput('throughput1')),
                                 data.step = 9,
-                                data.intro = 'This figure shows the distribution of administered vaccinations across the simulations runs.',
-                                data.hint = 'If you\'re not sure where to start, hit the help button on the left hand panel',
+                                data.intro = vaccinations_distributions_text,
+                                data.hint = vaccinations_distributions_text,
                                 data.position = 'bottom'
                             ),
                             introBox(
                                 box(width = 4, title = 'Processing times', status = status1, solidHeader = TRUE, plotOutput('processing1')),
                                 data.step = 10,
-                                data.intro = 'This figure shows the distribution of processing times across the simulation runs for each stations in the queue network, and the total processing time.'
+                                data.intro = processing_times_distribtion_text,
+                                data.hint = processing_times_distribtion_text
                             ),
                             introBox(
                                 box(width = 4, title = 'Staff Utilisation', status = status1, solidHeader = TRUE, plotOutput('utilisation1')),
                                 data.step = 11,
-                                data.intro = 'This figure shows the distribution of the staff utilisation factor across the simulations runs. Queue performance deteriates when staff utilisation exceeds 80%'
+                                data.intro = staff_utilisation_text,
+                                data.hint = staff_utilisation_text
                             )
                             )
                     ),
                     data.step = 8,
-                    data.intro = 'This panel provides a visual overview of the queue performance.'
+                    data.intro = queue_performance_overview_text,
+                    data.hint = queue_performance_overview_hint_text
                     ),
                     
                     introBox(
@@ -168,29 +165,36 @@ body <- dashboardBody(
 
                                     ## Service times
                                         tabPanel(title = span(icon("clock"),'Service times'),
-                                                 
                                                  fluidRow(
+                                                    introBox(
                                                          box(width = 6, 
                                                              visNetworkOutput("network1"),
                                                              status = status1, 
                                                              solidHeader = TRUE,
                                                              title = 'Mass vaccination queue network (click a node to edit the service times)'
-                                                     ),
+                                                            ),
+                                                        data.step = 13,
+                                                        data.intro = service_times_parameters_text
+                                                    ), # close introBox
+                                                    introBox(
                                                          box(width = 6, 
                                                              plotOutput('serviceTimesPlot1'), 
                                                              status = status1, 
                                                              solidHeader = TRUE, 
-                                                             title = 'Summary of assumed service service times by queue station'
-                                                             )
-                                                    )
-
+                                                             title = 'Summary of service times by queue station'
+                                                             ),
+                                                        data.step = 14,
+                                                        data.intro = service_times_charts_text
+                                                         
+                                                    ), # close introBox
+                                                 ) # close fluidRow
                                     ),
                                     
                                     ## Appointments and arrivals
                                     tabPanel(title = span(icon("calendar"), 'Appointments and arrivals'), width = 12,
                                              
                                              fluidRow(
-                                                 box(width = 4, title = 'Clinic schedule', status = status1, solidHeader = TRUE,
+                                                    box(width = 4, title = 'Clinic schedule', status = status1, solidHeader = TRUE,
                                                      inputPanel(
                                                          numericInput("startTime1", "Start time", value = 8, min = 0, max = 23),
                                                          numericInput("duration1", "Clinic duration (hours)", value = 8, min = 1, max = 16),
@@ -198,10 +202,10 @@ body <- dashboardBody(
                                                          numericInput("arrivals1", "Number of arrivals per appoinment block", value = 120, min = 1),
                                                          numericInput("headStart1", "Headstart for vaccine preparation (minutes)", value = 120, min = 15, step = 15)
 
-                                                     )
+                                                        )
                                                      
                                                      ),
-                                                 
+
                                                  box(width = 4, title = 'Arrival times', status = status1, solidHeader = TRUE,
                                                          inputPanel(
                                                              sliderInput("punctualityMean1", "Punctuality mean (minutes)", value = 0, min =-20, max = 20, step = 1),
@@ -250,7 +254,7 @@ body <- dashboardBody(
                         ) # Closes first box 
                     ), # Closes fluidRow
                 data.step = 12,
-                data.intro = 'This panel has three tabs allowing you to modify all of the model assumptions.'
+                data.intro = params_tabs_overview_text
                 ),
 
             HTML("<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'><img alt='Creative Commons Licence' style='border-width:0' src='https://i.creativecommons.org/l/by-nc/4.0/88x31.png' /></a><br />This work is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>Creative Commons Attribution-NonCommercial 4.0 International License</a>.")
@@ -456,6 +460,7 @@ body <- dashboardBody(
 ) # closes dashboardBody
 
 # Put it all together
-dashboardPage(header, 
+dashboardPage(
+              header, 
               sidebar, 
               body)
