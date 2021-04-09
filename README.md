@@ -12,7 +12,7 @@ This applet provides a graphical user interface to the mass vaccination and GP c
 ## Links
 * View and download the latest version of the paper from [medRxiv](https://doi.org/10.1101/2021.04.07.21255067)
 * Download the paper from [GitHub](https://github.com/CBDRH/vaccineQueue/blob/main/Preprint/Preprint.pdf) 
-* Article in [The Conversation](https://theconversation.com/drafts/158519/) 
+* Article in [The Conversation](https://theconversation.com/australian-vaccine-rollout-needs-all-hands-on-deck-after-the-latest-astrazeneca-news-mass-vaccination-hubs-included-158519) 
 * The queueing network models implmented in this app are estimated using the  `queuecomputer` R package [Ebert, A., Wu, P., Mengersen, K., & Ruggeri, F. (2020). Computationally Efficient Simulation of Queues: The R Package queuecomputer. Journal of Statistical Software, 95(5), 1 - 29. doi:http://dx.doi.org/10.18637/jss.v095.i05](https://www.jstatsoft.org/article/view/v095i05) 
          
 ## Bug reports         
