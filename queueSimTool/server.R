@@ -3,9 +3,9 @@
 shinyServer(function(input, output, session) {
     
     # initiate hints on startup
-    observe({
-        if(input$hintsOn1==1){hintjs(session, options = list("hintButtonLabel"="Ok"))}
-    })
+    # observe({
+    #     if(input$hintsOn1==1){hintjs(session, options = list("hintButtonLabel"="Ok"))}
+    # })
 
     ###############################################
             ### Mass vaccination ###
