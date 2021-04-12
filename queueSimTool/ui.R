@@ -15,8 +15,8 @@ sidebar <- dashboardSidebar(
 
 
     div(
-            style="text-align:center; background: #FFF200; padding: 25px",
-            tags$img(src='unsw_logo.png',height='70',width='165')
+            style="text-align:center; padding: 25px",
+            tags$img(src='unsw_logo_reverse.png',height='70',width='165')
     ),
     
 
@@ -25,10 +25,6 @@ sidebar <- dashboardSidebar(
         data.step = 13,
         data.intro = info_tab_text),
 
-
-            # div(style="text-align:center",
-            #         h4(span(icon("project-diagram"),'Vaccination mode'))
-            # ),
             br(), 
             introBox(
             sidebarMenu(id = "sidebar",

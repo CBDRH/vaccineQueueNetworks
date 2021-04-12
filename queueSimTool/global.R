@@ -37,13 +37,14 @@ if (file.exists(paste('www/', source_objects[1], sep = ""))) {
   source(paste('R/', 'prepDefaultData.R', sep = ""))
 }
 
-# logo
-if (!file.exists('www/unsw_logo.png')) {
-  file.copy(from='assets/unsw_logo.png',
-            to='www/')
-}
-
 # hint and guided tour strings
+
+vaccinations_distributions_text <- 'This figure shows the distribution of total vaccinations throughput across the simulation runs.'
+
+processing_times_distribtion_text <- 'This figure shows the distributions of processing times for each station, and overall, across the simulation runs.'
+
+staff_utilisation_text <- 'This figure shows the distributions of staff utilisation for each station across the simulation runs.'
+
 sidebar_overview__text <- 'This app allows you to run simulations for two distinct approaches to vaccine delivery. Here you can choose between two models: (i) a mass vaccination hub or (ii) a GP clinic model.'
 
 number_of_simulations_text <- 'Here you can set the number of simulations. Higher values will result in a longer running time but even 100 simulations should take less than a minute. Smaller values are fine, especially while you are experimenting.'
