@@ -74,7 +74,7 @@ arenaModel = function(arrivals,
   assQueue <- lag_step(regQueue$departures, reg2ass) %>% queue_step(assTime, nAss) # Lag step is walking time between stations
 
   ## Vaccination queue
-  vacQueue <- lag_step(assQueue$departures, ass2vac) %>% wait_step(rsiQueue$departures) %>% queue_step(vacTime, nVac) # Lag step is walking time between stations
+  vacQueue <- lag_step(assQueue$departures, ass2vac) %>% wait_step(sort(rsiQueue$departures)) %>% queue_step(vacTime, nVac) # Lag step is walking time between stations
 
   ## Observation queue
   obsQueue <- lag_step(vacQueue$departures, vac2obs) %>% lag_step(obsTime) # Lag step is walking time between stations

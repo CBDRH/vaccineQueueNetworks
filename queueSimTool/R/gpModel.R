@@ -46,7 +46,7 @@ gpModel = function(arrivals,
   regQueue <- queue_step(arrivals, regTime, nReg)
   
   ## Vaccination queue
-  vacQueue <- wait_step(regQueue, rsiQueue$departures) %>% queue_step(vacTime, nVac)
+  vacQueue <- wait_step(regQueue$departures, sort(rsiQueue$departures)) %>% queue_step(vacTime, nVac)
   
   ## Observation queue
   obsQueue <- lag_step(vacQueue$departures, obsTime)
