@@ -1,4 +1,5 @@
 arenaModel = function(arrivals,
+                      duration,
                       nRsi = 4,
                       nEnt = 8,
                       nReg = 12,
@@ -58,9 +59,9 @@ arenaModel = function(arrivals,
   # Queue process
 
   ## Preparation queue
-  rsiTarget1 <- ceiling(n/8)
-  rsiTarget2 <- n - rsiTarget1*7
-  rsiArrivals <- sort(c(rep(seq(0, 360, by = 60), rsiTarget1), rep(420, rsiTarget2)))
+  rsiTarget1 <- ceiling(n/duration)
+  rsiTarget2 <- n - rsiTarget1*(duration-1)
+  rsiArrivals <- sort(c(rep(seq(0,60*(duration-2), by = 60), rsiTarget1), rep(60*(duration-1) , rsiTarget2)))  
   rsiQueue <- queue_step(arrivals = rsiArrivals, service = rsiTime, servers = nRsi)
 
   ## Entrance station
@@ -73,7 +74,7 @@ arenaModel = function(arrivals,
   assQueue <- lag_step(regQueue$departures, reg2ass) %>% queue_step(assTime, nAss) # Lag step is walking time between stations
 
   ## Vaccination queue
-  vacQueue <- lag_step(assQueue$departures, ass2vac) %>% wait_step(rsiQueue$departures) %>% queue_step(vacTime, nVac) # Lag step is walking time between stations
+  vacQueue <- lag_step(assQueue$departures, ass2vac) %>% wait_step(sort(rsiQueue$departures)) %>% queue_step(vacTime, nVac) # Lag step is walking time between stations
 
   ## Observation queue
   obsQueue <- lag_step(vacQueue$departures, vac2obs) %>% lag_step(obsTime) # Lag step is walking time between stations

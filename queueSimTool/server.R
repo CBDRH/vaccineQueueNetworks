@@ -383,8 +383,9 @@ shinyServer(function(input, output, session) {
                                         ns = input$noShows1,
                                         startMin = input$headStart1,
                                         stopMin = input$headStart1 + 60*input$duration1 - input$interval1)
-        
+            
             queueUpdate1[[i]] <- arenaModel(arrivals = arrivalTimes1,
+                                            duration = input$duration1,
                                              nRsi = as.numeric(input$nRsi1),
                                              nEnt = as.numeric(input$nEnt1),
                                              nReg = as.numeric(input$nReg1),
@@ -804,6 +805,7 @@ shinyServer(function(input, output, session) {
                                           stopMin = input$headStart2 + 60*input$duration2 - input$interval2)
                 
                 queueUpdate2[[i]] <- gpModel(arrivals = arrivalTimes2,
+                                             duration = input$duration2,
                                                 nRsi = as.numeric(input$nRsi2),
                                                 nReg = as.numeric(input$nReg2),
                                                 nVac = as.numeric(input$nVac2),
@@ -919,6 +921,4 @@ shinyServer(function(input, output, session) {
                                                  "prevLabel"="Previous",
                                                  "skipLabel"="Done"))
     )
-
-
 })

@@ -193,12 +193,12 @@ body <- dashboardBody(
                                                     box(width = 4, title = 'Clinic schedule', status = status1, solidHeader = TRUE,
                                                      inputPanel(
                                                          numericInput("startTime1", "Start time", value = 8, min = 0, max = 23),
-                                                         numericInput("duration1", "Clinic duration (hours)", value = 8, min = 1, max = 16),
+                                                         numericInput("duration1", "Clinic duration (hours)", value = 8, min = 2, max = 16, step = 1),
                                                          numericInput("interval1", "Appointment block (minutes)", value = 60, min = 1),
                                                          numericInput("arrivals1", "Number of arrivals per appoinment block", value = 120, min = 1),
                                                          numericInput("headStart1", "Headstart for vaccine preparation (minutes)", value = 120, min = 15, step = 15)
-
-                                                        )
+ 
+                                                )
                                                      
                                                      ),
 
@@ -213,7 +213,6 @@ body <- dashboardBody(
                                                  box(width = 4, title = 'Summary of arrivals', status = status1, solidHeader = TRUE,
                                                      plotOutput("arrivalTimesPlot1")
                                                      )
-                                                 
                                              ) # Closes fluidRow
                                              
                                              
@@ -335,7 +334,7 @@ body <- dashboardBody(
                                                 box(width = 4, title = 'Clinic schedule', status = status2, solidHeader = TRUE,
                                                     inputPanel(
                                                         numericInput("startTime2", "Start time", value = 8, min = 0, max = 23),
-                                                        numericInput("duration2", "Clinic duration (hours)", value = 8, min = 1, max = 16),
+                                                        numericInput("duration2", "Clinic duration (hours)", value = 8, min = 2, max = 16),
                                                         numericInput("interval2", "Appointment block (minutes)", value = 10, min = 1),
                                                         numericInput("arrivals2", "Number of arrivals per appoinment block", value = 4, min = 1),
                                                         numericInput("headStart2", "Headstart for vaccine preparation (minutes)", value = 120, min = 15, step = 15)
