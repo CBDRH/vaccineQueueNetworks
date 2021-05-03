@@ -6,6 +6,17 @@ shinyServer(function(input, output, session) {
     # observe({
     #     if(input$hintsOn1==1){hintjs(session, options = list("hintButtonLabel"="Ok"))}
     # })
+    
+    #show intro modal
+    observeEvent("", {
+        showModal(modalDialog(
+            includeMarkdown("intro_text.md"),
+            size = 'l',
+            easyClose = TRUE,
+            fade = TRUE,
+            footer = NULL
+        ))
+    })
 
     ###############################################
             ### Mass vaccination ###
