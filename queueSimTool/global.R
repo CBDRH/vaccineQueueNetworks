@@ -7,6 +7,7 @@ library(purrr)
 library(shinyTime)
 library(lubridate)
 library(rintrojs)
+library(ggpubr)
 
 # Define theme colors
 color1 <- "aqua"
