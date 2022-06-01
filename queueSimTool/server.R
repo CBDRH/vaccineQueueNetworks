@@ -235,7 +235,7 @@ shinyServer(function(input, output, session) {
                 column(width = 6,
                        br(),
                        h4('Waiting times for patients who experience an adverse reaction'),
-                       sliderInput("failP1", "Baseline observation time", default$failP1(), min = 0, max = .2, step = 0.001),
+                       sliderInput("failP1", "Proportion of patients who experience an adverse event", default$failP1(), min = 0, max = .2, step = 0.001),
                        sliderInput("failFloor1", "Baseline waiting time", default$failFloor1(), min = 10, max = 30, step = 1),
                        sliderInput("failRate1", "Waiting time tail", default$failRate1(), min = 10, max = 30, step = 1),
                        uiOutput('failTimesText1'),
@@ -474,19 +474,31 @@ shinyServer(function(input, output, session) {
         ## Vaccinations per day
         output$infoThroughPut1 <- renderText({
             
-            queueTimes1 %>% 
+            infoThroughPut1 <- queueTimes1 %>% 
                 filter(station == 'Total') %>% 
                 group_by(iter) %>% 
                 summarise(n = max(id)) %>% 
-                summarise(mean = median(n)) %>% 
-                as.numeric() %>% 
-                prettyNum(digits = 0, big.mark=",")
+                summarise(mean = median(n),
+                          pct5 = quantile(n, .05),
+                          pct95 = quantile(n, .95))
+            
+            paste0(prettyNum(infoThroughPut1[1], big.mark=",", digits = 0), ' (', 
+                   prettyNum(infoThroughPut1[2], big.mark=",", digits = 0), ' - ', 
+                   prettyNum(infoThroughPut1[3], big.mark=",", digits = 0), ')')
         })
         
         ## Average process time
         output$infoProcessTime1 <- renderText({
-            t <- queueTimes1 %>% filter(station == 'Total') %>% summarise(mean = median(mins)) %>% unlist()
-            paste(round(t), 'minutes')
+            
+            infoProcessTime1 <- queueTimes1 %>% 
+                filter(station == 'Total') %>% 
+                summarise(mean = median(mins),
+                          pct5 = quantile(mins, .05),
+                          pct95 = quantile(mins, .95))
+            
+            paste0(prettyNum(infoProcessTime1[1], big.mark=",", digits = 0), ' (', 
+                   prettyNum(infoProcessTime1[2], big.mark=",", digits = 0), ' - ', 
+                   prettyNum(infoProcessTime1[3], big.mark=",", digits = 0), ')')
         })
 
 
@@ -496,12 +508,16 @@ shinyServer(function(input, output, session) {
     
     ## Vaccinations per day
     output$infoThroughPut1 <- renderText({
-        prettyNum(infoThroughPut1, big.mark=",")
+        paste0(prettyNum(infoThroughPut1[1], big.mark=",", digits = 0), ' (', 
+               prettyNum(infoThroughPut1[2], big.mark=",", digits = 0), ' - ', 
+               prettyNum(infoThroughPut1[3], big.mark=",", digits = 0), ')')
     })
 
     ## Average process time
     output$infoProcessTime1 <- renderText({
-        paste(round(infoProcessTime1), 'minutes')
+        paste0(prettyNum(infoProcessTime1[1], big.mark=",", digits = 0), ' (', 
+               prettyNum(infoProcessTime1[2], big.mark=",", digits = 0), ' - ', 
+               prettyNum(infoProcessTime1[3], big.mark=",", digits = 0), ')')
     })
 
 
@@ -886,19 +902,31 @@ shinyServer(function(input, output, session) {
         ## Vaccinations per day
         output$infoThroughPut2 <- renderText({
             
-            queueTimes2 %>% 
+            infoThroughPut2 <- queueTimes2 %>% 
                 filter(station == 'Total') %>% 
                 group_by(iter) %>% 
                 summarise(n = max(id)) %>% 
-                summarise(mean = median(n)) %>% 
-                as.numeric() %>% 
-                prettyNum(digits = 0, big.mark=",")
+                summarise(mean = median(n),
+                          pct5 = quantile(n, .05),
+                          pct95 = quantile(n, .95))
+            
+            paste0(prettyNum(infoThroughPut2[1], big.mark=",", digits = 0), ' (', 
+                   prettyNum(infoThroughPut2[2], big.mark=",", digits = 0), ' - ', 
+                   prettyNum(infoThroughPut2[3], big.mark=",", digits = 0), ')')
         })
         
         ## Average process time
         output$infoProcessTime2 <- renderText({
-            t <- queueTimes2 %>% filter(station == 'Total') %>% summarise(mean = median(mins)) %>% unlist()
-            paste(round(t), 'minutes')
+            
+            infoProcessTime2 <- queueTimes2 %>% 
+                filter(station == 'Total') %>% 
+                summarise(mean = median(mins),
+                          pct5 = quantile(mins, .05),
+                          pct95 = quantile(mins, .95))
+            
+            paste0(prettyNum(infoProcessTime2[1], big.mark=",", digits = 0), ' (', 
+                   prettyNum(infoProcessTime2[2], big.mark=",", digits = 0), ' - ', 
+                   prettyNum(infoProcessTime2[3], big.mark=",", digits = 0), ')')
         })
         
         
@@ -908,12 +936,16 @@ shinyServer(function(input, output, session) {
     
     ## Vaccinations per day
     output$infoThroughPut2 <- renderText({
-        prettyNum(infoThroughPut2, big.mark=",")
+        paste0(prettyNum(infoThroughPut2[1], big.mark=",", digits = 0), ' (', 
+               prettyNum(infoThroughPut2[2], big.mark=",", digits = 0), ' - ', 
+               prettyNum(infoThroughPut2[3], big.mark=",", digits = 0), ')')
     })
     
     ## Average process time
     output$infoProcessTime2 <- renderText({
-        paste(round(infoProcessTime2), 'minutes')
+        paste0(prettyNum(infoProcessTime2[1], big.mark=",", digits = 0), ' (', 
+               prettyNum(infoProcessTime2[2], big.mark=",", digits = 0), ' - ', 
+               prettyNum(infoProcessTime2[3], big.mark=",", digits = 0), ')')
     })
     
     

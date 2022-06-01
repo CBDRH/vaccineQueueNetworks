@@ -11,6 +11,7 @@ if (run_it) {
   queueDefault1 <- list()
   for (i in 1:20) {
     queueDefault1[[i]] <- arenaModel(arrivals = arrivals(120, 60, 0, 5, 0.02), 
+                                     duration = 8,
                                      nRsi = 4, nEnt = 8, nReg = 12, nAss = 8, 
                                      nVac = 10)
   }
@@ -25,6 +26,7 @@ if (run_it) {
   queueDefault2 <- list()
   for (i in 1:20) {
     queueDefault2[[i]] <- gpModel(arrivals = arrivals(4, 10, -3, 1, 0.02), 
+                                  duration = 8,
                                   nRsi = 2, nReg = 2, nVac = 4)
   }
   # Default queue plots
@@ -40,14 +42,18 @@ if (run_it) {
                       filter(station == 'Total') %>% 
                       group_by(iter) %>% 
                       summarise(n = max(id)) %>% 
-                      summarise(mean = median(n))
+                      summarise(mean = median(n),
+                                pct5 = quantile(n, .05),
+                                pct95 = quantile(n, .95))
   save(infoThroughPut1, 
        file = here::here('queueSimTool/www/infoThroughPut1'))
   
   ## Median processing time
   infoProcessTime1 <- queueTimes1 %>% 
                         filter(station == 'Total') %>% 
-                        summarise(mean = median(mins))
+                        summarise(mean = median(mins),
+                                  pct5 = quantile(mins, .05),
+                                  pct95 = quantile(mins, .95))
   save(infoProcessTime1, 
        file = here::here('queueSimTool/www/infoProcessTime1'))
   
@@ -56,14 +62,19 @@ if (run_it) {
                       filter(station == 'Total') %>% 
                       group_by(iter) %>% 
                       summarise(n = max(id)) %>% 
-                      summarise(mean = median(n))
+                      summarise(mean = median(n),
+                                pct5 = quantile(n, .05),
+                                pct95 = quantile(n, .95))
   save(infoThroughPut2, 
        file = here::here('queueSimTool/www/infoThroughPut2'))
   
   ## Median processing time
   infoProcessTime2 <- queueTimes2 %>% 
                         filter(station == 'Total') %>% 
-                        summarise(mean = median(mins))
+                        summarise(mean = median(mins),
+                                  pct5 = quantile(mins, .05),
+                                  pct95 = quantile(mins, .95))
+  
   save(infoProcessTime2, 
        file = here::here('queueSimTool/www/infoProcessTime2'))
   

@@ -80,7 +80,7 @@ body <- dashboardBody(
                         fluidRow(
                             introBox(
                                 infoBox(width = 3,
-                                        "Median number of vaccinations", uiOutput("infoThroughPut1"), icon = icon("syringe"), color = color1
+                                        title = "Number of vaccinations", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoThroughPut1"), icon = icon("syringe"), color = color1
                                 ),
                                 data.step = 4,
                                 data.intro = median_number_of_vaccinations_text,
@@ -88,7 +88,7 @@ body <- dashboardBody(
                             ),
                             introBox(
                                 infoBox(width = 3,
-                                        "Median process time", uiOutput("infoProcessTime1"), icon = icon("clock"), color = color1
+                                        title = "Processing time (minutes)", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoProcessTime1"), icon = icon("clock"), color = color1
                                 ),
                                 data.step = 5,
                                 data.intro = median_process_time_text,
@@ -276,10 +276,10 @@ body <- dashboardBody(
                     # infoBoxes
                     fluidRow(
                         infoBox(width = 3,
-                                "Median number of vaccinations", uiOutput("infoThroughPut2"), icon = icon("syringe"), color = color2
+                                title = "Number of vaccinations", subtitle = 'Median (5th - 95th percentile)',  uiOutput("infoThroughPut2"), icon = icon("syringe"), color = color2
                         ),
                         infoBox(width = 3,
-                                "Median process time", uiOutput("infoProcessTime2"), icon = icon("clock"), color = color2
+                                title = "Processing time (minutes)", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoProcessTime2"), icon = icon("clock"), color = color2
                         ),
                         infoBox(width = 3,
                                 "Healthcare staff", uiOutput("infoHealthStaff2"), icon = icon("user-md"), color = color2
