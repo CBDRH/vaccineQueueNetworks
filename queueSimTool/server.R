@@ -220,8 +220,8 @@ shinyServer(function(input, output, session) {
                 group_by(iter) %>% 
                 summarise(n = max(id)) %>% 
                 summarise(mean = median(n),
-                          pct25 = quantile(n, .25),
-                          pct75 = quantile(n, .75))
+                          lcl = quantile(n, .025),
+                          ucl = quantile(n, .975))
             
             paste0(prettyNum(infoThroughPut1[1], big.mark=",", digits = 0), ' (', 
                    prettyNum(infoThroughPut1[2], big.mark=",", digits = 0), ' - ', 
@@ -232,10 +232,12 @@ shinyServer(function(input, output, session) {
         output$infoProcessTime1 <- renderText({
             
             infoProcessTime1 <- queueTimes1 %>% 
-                filter(station == 'Total') %>% 
+                filter(station == 'Total') %>%
+                group_by(iter) %>% 
+                summarise(mins = median(mins)) %>% 
                 summarise(mean = median(mins),
-                          pct25 = quantile(mins, .25),
-                          pct75 = quantile(mins, .75))
+                          lcl = quantile(mins, .025),
+                          ucl = quantile(mins, .975))
             
             paste0(prettyNum(infoProcessTime1[1], big.mark=",", digits = 0), ' (', 
                    prettyNum(infoProcessTime1[2], big.mark=",", digits = 0), ' - ', 
@@ -452,8 +454,8 @@ shinyServer(function(input, output, session) {
                 group_by(iter) %>% 
                 summarise(n = max(id)) %>% 
                 summarise(mean = median(n),
-                          pct25 = quantile(n, .25),
-                          pct75 = quantile(n, .75))
+                          lcl = quantile(n, .025),
+                          ucl = quantile(n, .975))
             
             paste0(prettyNum(infoThroughPut2[1], big.mark=",", digits = 0), ' (', 
                    prettyNum(infoThroughPut2[2], big.mark=",", digits = 0), ' - ', 
@@ -464,10 +466,12 @@ shinyServer(function(input, output, session) {
         output$infoProcessTime2 <- renderText({
             
             infoProcessTime2 <- queueTimes2 %>% 
-                filter(station == 'Total') %>% 
+                filter(station == 'Total') %>%
+                group_by(iter) %>% 
+                summarise(mins = median(mins)) %>% 
                 summarise(mean = median(mins),
-                          pct25 = quantile(mins, .25),
-                          pct75 = quantile(mins, .75))
+                          lcl = quantile(mins, .025),
+                          ucl = quantile(mins, .975))
             
             paste0(prettyNum(infoProcessTime2[1], big.mark=",", digits = 0), ' (', 
                    prettyNum(infoProcessTime2[2], big.mark=",", digits = 0), ' - ', 
@@ -495,7 +499,7 @@ shinyServer(function(input, output, session) {
     
     
     output$infoHealthStaff2 <- renderText({
-        prettyNum(input$nRsi2 + input$nReg2 + + input$nVac2, big.mark=",")
+        prettyNum(input$nRsi2 + input$nReg2 + input$nVac2, big.mark=",")
     })
     
     
