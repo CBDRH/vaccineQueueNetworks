@@ -56,6 +56,18 @@ plotServiceTime2 <- function(mean, sd, title, color){
           axis.ticks.y=element_blank())
 }
 
+# Plot the service times based on a generic input
+plotServiceTime3 <- function(time, title, color){
+  df <- data.frame(mins = time)
+  ggplot(df, aes(x=mins)) + geom_histogram() + 
+    geom_vline(aes(xintercept = median(mins)), color = color, alpha = 0.6, size = 1.6) + 
+    scale_x_continuous('Time (minutes)', limits = c(0, NA)) +
+    labs(title = title) +
+    theme(axis.title.y=element_blank(), 
+          axis.text.y=element_blank(), 
+          axis.ticks.y=element_blank())
+}
+
 summariseServiceTime <- function(floor, rate){
   df <- data.frame(mins = floor + rexp(1000, rate))
   mean <- prettyNum(mean(df$mins), digits = 2)
@@ -72,9 +84,14 @@ summariseServiceTime2 <- function(m, sd){
   p95 <- prettyNum(quantile(df$mins, .95), digits = 2) 
   shiny::HTML(paste0('The average service time is ', mean, ' minutes.', br(), 
                      '95% of service times are &leq; ', p95, ' minutes.'))
-  
 }
 
+summariseServiceTime3 <- function(time){
+  median <- prettyNum(median(time), digits = 2)
+  p95 <- prettyNum(quantile(time, .95), digits = 2) 
+  shiny::HTML(paste0('The median service time is ', median, ' minutes.', br(), 
+                     '95% of service times are &leq; ', p95, ' minutes.'))
+}
 
 
 # Create a data frame of service times based on GP model output
@@ -99,3 +116,18 @@ getUtilTime <- function(modelOutput){
                               qLengths = .$qLengths$qLengths,
                               util = .$util$util), .id = "iter") 
 }
+
+
+
+genTimeDist <- function(n, dist, params = list){
+  
+  time <- if(dist == 'exp') {params[[1]] + rexp(n, params[[2]])} 
+          else if(dist == 'nrm') {rnorm(n, params[[1]], params[[2]])}
+          else if(dist == 'lgn') {exp(rnorm(n, params[[1]], params[[2]]))}
+          else if(dist == 'gam') {params[[1]] + rgamma(n, shape = params[[2]], scale = params[[3]])} 
+          else if(dist == 'wei') {params[[1]] + rweibull(n, shape = params[[2]], scale = params[[3]])} 
+  
+  return(time)
+}
+
+

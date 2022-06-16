@@ -1,0 +1,21 @@
+/* change the background color */
+.theme1 .nav-tabs-custom .nav-tabs .active {
+    border-top-color: #00c0ef; /* This should match color1 in global.R */
+}
+
+.theme2 .nav-tabs-custom .nav-tabs .active {
+    border-top-color: #639f7a; /* This should match color2 in global.R */
+}
+
+
+.theme1 .nav-pills .active a, .theme1 .nav-pills .active a:focus, .theme1 .nav-pills .active a:hover {
+      background-color: #FFF; 
+      border-top-color: #00c0ef; /* This should match color1 in global.R */
+      color: #00c0ef;
+}
+
+.theme2 .nav-pills .active a, .theme2 .nav-pills .active a:focus, .theme2 .nav-pills .active a:hover {
+      background-color: #FFF; 
+      border-top-color: #00a65a; /* This should match color2 in global.R */
+      color: #00a65a;
+}

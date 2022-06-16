@@ -1,4 +1,4 @@
-# Only run this once, chnage FALSE to TRUE below
+# Only run this once, change FALSE to TRUE below (Need to have arenaModel, gpModel, helperFunctions and colorsin global env)
 run_it <- FALSE
 
 if (run_it) { 
@@ -43,8 +43,8 @@ if (run_it) {
                       group_by(iter) %>% 
                       summarise(n = max(id)) %>% 
                       summarise(mean = median(n),
-                                pct5 = quantile(n, .05),
-                                pct95 = quantile(n, .95))
+                                pct25 = quantile(n, .25),
+                                pct75 = quantile(n, .75))
   save(infoThroughPut1, 
        file = here::here('queueSimTool/www/infoThroughPut1'))
   
@@ -52,8 +52,8 @@ if (run_it) {
   infoProcessTime1 <- queueTimes1 %>% 
                         filter(station == 'Total') %>% 
                         summarise(mean = median(mins),
-                                  pct5 = quantile(mins, .05),
-                                  pct95 = quantile(mins, .95))
+                                  pct25 = quantile(mins, .25),
+                                  pct75 = quantile(mins, .75))
   save(infoProcessTime1, 
        file = here::here('queueSimTool/www/infoProcessTime1'))
   
@@ -63,8 +63,8 @@ if (run_it) {
                       group_by(iter) %>% 
                       summarise(n = max(id)) %>% 
                       summarise(mean = median(n),
-                                pct5 = quantile(n, .05),
-                                pct95 = quantile(n, .95))
+                                pct25 = quantile(n, .25),
+                                pct75 = quantile(n, .75))
   save(infoThroughPut2, 
        file = here::here('queueSimTool/www/infoThroughPut2'))
   
@@ -72,20 +72,12 @@ if (run_it) {
   infoProcessTime2 <- queueTimes2 %>% 
                         filter(station == 'Total') %>% 
                         summarise(mean = median(mins),
-                                  pct5 = quantile(mins, .05),
-                                  pct95 = quantile(mins, .95))
+                                  pct25 = quantile(mins, .25),
+                                  pct75 = quantile(mins, .75))
   
   save(infoProcessTime2, 
        file = here::here('queueSimTool/www/infoProcessTime2'))
   
-  
-  ## Average process time
-  infoProcessTime1 <- queueTimes1 %>% 
-          filter(station == 'Total') %>% 
-          summarise(mean = median(mins)) %>% 
-          unlist()
-  save(infoProcessTime1, 
-       file = here::here('queueSimTool/www/infoProcessTime1'))
 
   throughputP1 <- queueTimes1 %>%
                     filter(station=='Total') %>%

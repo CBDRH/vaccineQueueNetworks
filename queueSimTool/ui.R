@@ -1,5 +1,3 @@
-
-
 # Header
 header <- dashboardHeader(title =  "Vaccination facility simulator",
                           titleWidth = 300,
@@ -13,16 +11,17 @@ header <- dashboardHeader(title =  "Vaccination facility simulator",
 # Sidebar
 sidebar <- dashboardSidebar(
 
+    # Link to custom css
+    includeCSS('www/style.css'),
 
     div(
             style="text-align:center; padding: 25px",
             tags$img(src='unsw_logo_reverse.png',height='70',width='165')
     ),
-    
 
     introBox(
         sidebarMenu(id = "sidebar", menuItem("About this app", tabName = "info", icon = icon("info"))),  
-        data.step = 13,
+        data.step = 15,
         data.intro = info_tab_text),
 
             br(), 
@@ -53,7 +52,7 @@ sidebar <- dashboardSidebar(
                      actionButton(inputId = "runSim2", "Run",icon = icon("redo"), width = '80%', style = "color: #fff; background-color: #00a65a; border-color: #00a65a"),
                      hr()
     ),
-    
+
     data.step = 2,
     data.intro = number_of_simulations_text,
     data.position = 'right',
@@ -65,22 +64,25 @@ sidebar <- dashboardSidebar(
 
 # Body
 body <- dashboardBody(
-
+    
     introjsUI(), # To enable rintrojs
 
     tabItems(
         
         # Mass vaccination hub
         tabItem(tabName = "massVac", 
-                fluidPage(
+                fluidPage( 
+                    
+                    # textOutput("test1"),
 
                     
                     # infoBoxes
                     introBox(
                         fluidRow(
+
                             introBox(
                                 infoBox(width = 3,
-                                        title = "Number of vaccinations", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoThroughPut1"), icon = icon("syringe"), color = color1
+                                        title = "Number of vaccinations", subtitle = 'Median (25th - 75th percentile)', uiOutput("infoThroughPut1"), icon = icon("syringe"), color = color1
                                 ),
                                 data.step = 4,
                                 data.intro = median_number_of_vaccinations_text,
@@ -88,7 +90,7 @@ body <- dashboardBody(
                             ),
                             introBox(
                                 infoBox(width = 3,
-                                        title = "Processing time (minutes)", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoProcessTime1"), icon = icon("clock"), color = color1
+                                        title = "Processing time (minutes)", subtitle = 'Median (25th - 75th percentile)', uiOutput("infoProcessTime1"), icon = icon("clock"), color = color1
                                 ),
                                 data.step = 5,
                                 data.intro = median_process_time_text,
@@ -156,33 +158,83 @@ body <- dashboardBody(
                             collapsed = FALSE, 
                             solidHeader = FALSE, 
                             status = status1, 
-
+                            div(class='theme1',
+                                
                                 tabBox(width = 12,
 
                                     ## Service times
                                         tabPanel(title = span(icon("clock"),'Service times'),
                                                  fluidRow(
                                                     introBox(
-                                                         box(width = 6, 
-                                                             visNetworkOutput("network1"),
+                                                         box(width = 7, 
+                                                             
+                                                                 tabsetPanel(id = 'serviceTimes1', type = 'pills',  
+                                                                     tabPanel('Preparation',
+                                                                              helpText('Inspect vaccines | log details | prepare dose'),
+                                                                              mod_distChoiceUI('rsi1', selected = 'exp', params = list(1, 3))
+                                                                              ),
+                                                                     tabPanel('Entrance',
+                                                                              helpText('Temperature check | Check in'),
+                                                                              mod_distChoiceUI('ent1', selected = 'exp', params = list(2, 1))
+                                                                              ),
+                                                                     tabPanel('Registration',
+                                                                              helpText('Confirm appointment | book second appointment'),
+                                                                              mod_distChoiceUI('reg1', selected = 'exp', params = list(3, 0.7))
+                                                                              ),
+                                                                     tabPanel('Assessment',
+                                                                              helpText('Confirm clinical suitability | record consent'),
+                                                                              mod_distChoiceUI('ass1', selected = 'exp', params = list(2, 1))
+                                                                              ),
+                                                                     tabPanel('Vaccination',
+                                                                              helpText('Vaccinating the patient'),
+                                                                              mod_distChoiceUI('vac1', selected = 'exp', params = list(3, 1))
+                                                                              ),
+                                                                     tabPanel('Observation',
+                                                                              helpText('Observation time after receiving the vaccine'),
+                                                                              mod_distChoiceUI('obs1', selected = 'nrm', params = list(20, 0.5))
+                                                                              ),
+                                                                     tabPanel('Adverse reaction',
+                                                                              helpText('Observation times for patients experiencing an adverse reaction'),
+                                                                              mod_distChoiceUI('fail1', selected = 'exp', params = list(20, 0.1))
+                                                                     ),
+                                                                     tabPanel('Transitions',
+                                                                              helpText('Walking time between stations'),
+                                                                              tabsetPanel(id = 'transitions',
+                                                                                          tabPanel('Entrance to registration station',
+                                                                                                   mod_distChoiceUI('ent2reg1', selected = 'exp', params = list(0, 2))
+                                                                                                   ),
+                                                                                          tabPanel('Regitration to assessment station',
+                                                                                                   mod_distChoiceUI('reg2ass1', selected = 'exp', params = list(0, 2))
+                                                                                                   ),
+                                                                                          tabPanel('Assessment to vaccination station',
+                                                                                                   mod_distChoiceUI('ass2vac1', selected = 'exp', params = list(0, 2))
+                                                                                                   ),
+                                                                                          tabPanel('Vaccination to Observation station',
+                                                                                                   mod_distChoiceUI('vac2obs1', selected = 'exp', params = list(0, 2))
+                                                                                                   )
+                                                                                          )
+
+                                                                     )
+                                                                ),
+
                                                              status = status1, 
                                                              solidHeader = TRUE,
-                                                             title = 'Mass vaccination queue network (click a node to edit the service times)'
+                                                             title = 'Time distributions for each queue station'
                                                             ),
                                                         data.step = 13,
                                                         data.intro = service_times_parameters_text
                                                     ), # close introBox
                                                     introBox(
-                                                         box(width = 6, 
-                                                             plotOutput('serviceTimesPlot1'), 
-                                                             status = status1, 
-                                                             solidHeader = TRUE, 
-                                                             title = 'Summary of service times by queue station'
+                                                         box(width = 5,
+                                                             plotOutput('serviceTimesPlot1'),
+                                                             status = status1,
+                                                             solidHeader = TRUE,
+                                                             title = 'Summary of assumed service times for all stations'
                                                              ),
                                                         data.step = 14,
                                                         data.intro = service_times_charts_text
-                                                         
-                                                    ), # close introBox
+
+                                                    ) # close introBox
                                                  ) # close fluidRow
                                     ),
                                     
@@ -246,6 +298,7 @@ body <- dashboardBody(
                                     ) 
 
                                 ) # Closes tabBox
+                            ) # Closes div
                         ) # Closes first box 
                     ), # Closes fluidRow
                 data.step = 12,
@@ -276,10 +329,10 @@ body <- dashboardBody(
                     # infoBoxes
                     fluidRow(
                         infoBox(width = 3,
-                                title = "Number of vaccinations", subtitle = 'Median (5th - 95th percentile)',  uiOutput("infoThroughPut2"), icon = icon("syringe"), color = color2
+                                title = "Number of vaccinations", subtitle = 'Median (25th - 75th percentile)',  uiOutput("infoThroughPut2"), icon = icon("syringe"), color = color2
                         ),
                         infoBox(width = 3,
-                                title = "Processing time (minutes)", subtitle = 'Median (5th - 95th percentile)', uiOutput("infoProcessTime2"), icon = icon("clock"), color = color2
+                                title = "Processing time (minutes)", subtitle = 'Median (25th - 75th percentile)', uiOutput("infoProcessTime2"), icon = icon("clock"), color = color2
                         ),
                         infoBox(width = 3,
                                 "Healthcare staff", uiOutput("infoHealthStaff2"), icon = icon("user-md"), color = color2
@@ -304,6 +357,7 @@ body <- dashboardBody(
                             collapsed = FALSE, 
                             solidHeader = FALSE, 
                             status = status2, 
+                            div(class='theme2',
                             
                             tabBox(width = 12,
                                    
@@ -311,17 +365,38 @@ body <- dashboardBody(
                                    tabPanel(title = span(icon("clock"),'Service times'),
                                             
                                             fluidRow(
-                                                box(width = 6, 
-                                                    visNetworkOutput("network2"), 
+                                                box(width = 7, 
+                                                    tabsetPanel(id = 'serviceTimes2', type = 'pills',  
+                                                                tabPanel('Preparation',
+                                                                         helpText('Inspect vaccines | log details | prepare dose'),
+                                                                         mod_distChoiceUI('rsi2', selected = 'exp', params = list(1, 3))
+                                                                ),
+                                                                tabPanel('Registration',
+                                                                         helpText('Confirm appointment | book second appointment'),
+                                                                         mod_distChoiceUI('reg2', selected = 'exp', params = list(3, 1))
+                                                                ),
+                                                                tabPanel('Vaccination',
+                                                                         helpText('Vaccinating the patient'),
+                                                                         mod_distChoiceUI('vac2', selected = 'exp', params = list(5, 0.5))
+                                                                ),
+                                                                tabPanel('Observation',
+                                                                         helpText('Observation time after receiving the vaccine'),
+                                                                         mod_distChoiceUI('obs2', selected = 'nrm', params = list(20, 0.5))
+                                                                ),
+                                                                tabPanel('Adverse reaction',
+                                                                         helpText('Observation times for patients experiencing an adverse reaction'),
+                                                                         mod_distChoiceUI('fail2', selected = 'exp', params = list(20, 0.1))
+                                                                )
+                                                    ),
                                                     status = status2, 
                                                     solidHeader = TRUE,
                                                     title = 'GP Clinic queue network (click a node to edit the service times)'
                                                 ),
-                                                box(width = 6, 
+                                                box(width = 5, 
                                                     plotOutput('serviceTimesPlot2'), 
                                                     status = status2, 
                                                     solidHeader = TRUE, 
-                                                    title = 'Summary of assumed service service times by queue station')
+                                                    title = 'Summary of assumed service times for all station')
                                             ),
                                             
                                    ),
@@ -385,6 +460,7 @@ body <- dashboardBody(
                                    ) 
                                    
                             ) # Closes tabBox
+                            ) # Closes div
                         ) # Closes first box 
                     ), # Closes fluidRow
                     
