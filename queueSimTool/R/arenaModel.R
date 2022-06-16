@@ -5,25 +5,29 @@ arenaModel = function(arrivals,
                       nReg = 12,
                       nAss = 8,
                       nVac = 10,
-                      rsiFloor = 1,
-                      rsiRate = 3,
-                      entFloor = 2,
-                      entRate = 1,
-                      regFloor = 3,
-                      regRate = 0.7,
-                      assFloor = 2,
-                      assRate = 1,
-                      vacFloor = 3,
-                      vacRate = 1,
-                      obsMean = 20, 
-                      obsSD = 0.5,
-                      ent2regRate = 2,
-                      reg2assRate = 2,
-                      ass2vacRate = 2,
-                      vac2obsRate = 2,
-                      failP = 0.02,
-                      failFloor = 20,
-                      failRate = 1/10){
+                      rsiDist = 'exp',
+                      rsiParams = list(1, 3),
+                      entDist = 'exp',
+                      entParams = list(2, 1),
+                      regDist = 'exp',
+                      regParams = list(3, 0.7),
+                      assDist = 'exp',
+                      assParams = list(2, 1),
+                      vacDist = 'exp',
+                      vacParams = list(3, 1),
+                      obsDist = 'nrm',
+                      obsParams = list(20, 0.5),
+                      failDist = 'exp',
+                      failParams = list(20, 0.1),
+                      ent2regDist = 'exp',
+                      ent2regParams = list(0, 2),
+                      reg2assDist = 'exp',
+                      reg2assParams = list(0, 2),
+                      ass2vacDist = 'exp',
+                      ass2vacParams = list(0, 2),
+                      vac2obsDist = 'exp',
+                      vac2obsParams = list(0, 2),
+                      failP = 0.02){
   
   # Number of arrivals, taking into account no-shows/cancellations
   n <- length(arrivals) 
@@ -31,30 +35,30 @@ arenaModel = function(arrivals,
   # Time distributions
   
   ## Average time to prepare one syringe of vaccine
-  rsiTime <- rsiFloor + rexp(n, rsiRate)
+  rsiTime <- genTimeDist(n, rsiDist, rsiParams)
   
   ## Time entrance station
-  entTime <- entFloor + rexp(n, entRate)
+  entTime <- genTimeDist(n, entDist, entParams)
   
   ## Time to register (temperature check plus pre-vaccination check list)
-  regTime <- regFloor + rexp(n, regRate)
+  regTime <- genTimeDist(n, regDist, regParams)
   
   ## Time to vaccinate (consent, doffing and jabbing)
-  assTime <- assFloor + rexp(n, assRate)
+  assTime <- genTimeDist(n, assDist, assParams)
   
   ## Time to vaccinate (consent, doffing and jabbing)
-  vacTime <- vacFloor + rexp(n, vacRate)
+  vacTime <- genTimeDist(n, vacDist, vacParams)
   
   ## Observational times
   obsTime <- ifelse(rbinom(n, 1, failP), 
-                    failFloor + rexp(n, failRate),
-                    rnorm(n, obsMean, obsSD))
+                    genTimeDist(n, failDist, failParams),
+                    genTimeDist(n, obsDist, obsParams))
   
   ## Times to traverse between the stations
-  ent2reg <- rexp(n, ent2regRate)
-  reg2ass <- rexp(n, reg2assRate)
-  ass2vac <- rexp(n, ass2vacRate)
-  vac2obs <- rexp(n, vac2obsRate)
+  ent2reg <- genTimeDist(n, ent2regDist, ent2regParams)
+  reg2ass <- genTimeDist(n, reg2assDist, reg2assParams)
+  ass2vac <- genTimeDist(n, ass2vacDist, ass2vacParams)
+  vac2obs <- genTimeDist(n, vac2obsDist, vac2obsParams)
   
   # Queue process
 
@@ -83,14 +87,14 @@ arenaModel = function(arrivals,
   # Store the service times
   largeN <- 1000
   dfService <- data.frame(
-    rsi = rsiFloor + rexp(largeN, rsiRate),
-    ent = entFloor + rexp(largeN, entRate),
-    reg = regFloor + rexp(largeN, regRate),
-    ass = assFloor + rexp(largeN, assRate),
-    vac = vacFloor + rexp(largeN, vacRate),
-    obs = ifelse(rbinom(largeN, 1, failP),
-                 failFloor + rexp(largeN, failRate),
-                 rnorm(n, obsMean, obsSD))
+    rsi = genTimeDist(largeN, rsiDist, rsiParams),
+    ent = genTimeDist(largeN, entDist, entParams),
+    reg = genTimeDist(largeN, regDist, regParams),
+    ass = genTimeDist(largeN, assDist, assParams),
+    vac = genTimeDist(largeN, vacDist, vacParams),
+    obs = ifelse(rbinom(largeN, 1, failP), 
+                 genTimeDist(largeN, failDist, failParams),
+                 genTimeDist(largeN, obsDist, obsParams))
   ) %>%
     mutate(id = row_number())  %>%
     tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac, obs), names_to = 'station', values_to = 'mins')

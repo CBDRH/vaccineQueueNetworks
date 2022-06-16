@@ -66,7 +66,7 @@ support_staff_text <- 'This is the number of additional support staff to run the
 
 info_boxes_hint_text <- "The four boxes shown here provide a high level summary of the queue performance and assumed staff numbers. These figures will update automatically as you run new simulations. From left-to-right, the boxes show a) the likely number of vaccinations that could be administered over the specified clinic time; b) the median time from start to finish for a person coming to be vaccinated; c) the number of healthcare staff that are involved in the queue processes; d) the number of additional support staff to run the clinic."
 
-service_times_parameters_text <- "Click each node in the network diagram to bring up a dialogue box which allows you to edit the parameters for that node."
+service_times_parameters_text <- "In this panel you can customised the assumed distribution of service times for each station in the queue network. For example, you can specify how long you expect the registration process to take. Service times can be parameterised from a choice of five distributions."
 
 service_times_charts_text <- "These charts show the distribution of service times at each station, as specified by the parameters you set. The vertical lines indicate the median process time."
 
