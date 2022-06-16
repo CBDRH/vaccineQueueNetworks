@@ -273,7 +273,7 @@ body <- dashboardBody(
                                     ## Staffing
                                     tabPanel(title = span(icon("users"), 'Staffing'), width = 12,
                                              fluidRow(
-                                                box(width=6, title = "Queue staff", status = status1, solidHeader = TRUE,
+                                                box(width=4, title = "Queue staff", status = status1, solidHeader = TRUE,
                                                     inputPanel(
                                                         numericInput("nEnt1", "1. Entrance", value = 8, width = '60%'),
                                                         numericInput("nReg1", "2. Registration", value = 12, width = '60%'),
@@ -283,7 +283,7 @@ body <- dashboardBody(
                                                         numericInput("nRsi1", "B. Preparation", value = 4, width = '60%')
                                                     )
                                              ),
-                                                box(width=6, title = 'Support staff', status = status1, solidHeader = TRUE,
+                                                box(width=4, title = 'Support staff', status = status1, solidHeader = TRUE, 
                                                     inputPanel(
                                                         numericInput("nAdm1", "Administrative", value = 2, width = '60%'),
                                                         numericInput("nMar1", "Marshalls", value = 2, width = '60%'),
@@ -292,6 +292,11 @@ body <- dashboardBody(
                                                         numericInput("nCat1", "Catering", value = 2, width = '60%'),
                                                         numericInput("nOth1", "Other", value = 2, width = '60%')
                                                     )
+                                             ),
+                                             box(width=4, title = "Waiting room capacity", status = status1, solidHeader = TRUE, 
+                                                 inputPanel(
+                                                     numericInput("nChairs1", "Waiting room capacity", value = 50, width = '80%')
+                                                 )
                                              )
                                              
                                         )
@@ -437,7 +442,7 @@ body <- dashboardBody(
                                    ## Staffing
                                    tabPanel(title = span(icon("users"), 'Staffing'), width = 12,
                                             fluidRow(
-                                                box(width=6, title = "Queue staff", status = status2, solidHeader = TRUE,
+                                                box(width=4, title = "Queue staff", status = status2, solidHeader = TRUE,
                                                     inputPanel(
                                                         numericInput("nReg2", "1. Registration", value = 2, width = '60%'),
                                                         numericInput("nVac2", "2. Vaccination", value = 4, width = '60%'),
@@ -445,7 +450,7 @@ body <- dashboardBody(
                                                         numericInput("nRsi2", "B. Preparation", value = 2, width = '60%')
                                                     )
                                                 ),
-                                                box(width=6, title = 'Support staff', status = status2, solidHeader = TRUE,
+                                                box(width=4, title = 'Support staff', status = status2, solidHeader = TRUE,
                                                     inputPanel(
                                                         numericInput("nAdm2", "Administrative", value = 1, width = '60%'),
                                                         numericInput("nMar2", "Marshalls", value = 1, width = '60%'),
@@ -453,6 +458,11 @@ body <- dashboardBody(
                                                         numericInput("nCln2", "Cleaning", value = 1, width = '60%'),
                                                         numericInput("nCat2", "Catering", value = 0, width = '60%'),
                                                         numericInput("nOth2", "Other", value = 0, width = '60%')
+                                                    )
+                                                ),
+                                                box(width=4, title = "Waiting room capacity", status = status2, solidHeader = TRUE, 
+                                                    inputPanel(
+                                                               numericInput("nChairs2", "Waiting room capacity", value = 10, width = '80%')
                                                     )
                                                 )
                                                 

@@ -3,6 +3,7 @@ gpModel = function(arrivals,
                    nRsi = 2,
                    nReg = 2,
                    nVac = 4,
+                   nChairs = 10,
                    rsiDist = 'exp',
                    rsiParams = list(1, 3),
                    regDist = 'exp',
@@ -49,7 +50,7 @@ gpModel = function(arrivals,
   vacQueue <- wait_step(regQueue$departures, sort(rsiQueue$departures)) %>% queue_step(vacTime, nVac)
   
   ## Observation queue
-  obsQueue <- lag_step(vacQueue$departures, obsTime)
+  obsQueue <- vacQueue$departures %>% queue_step(obsTime, nChairs)
   
   
   # Store the service times
@@ -75,8 +76,8 @@ gpModel = function(arrivals,
     rsi = rsiQueue$departures - rsiArrivals,
     reg = regQueue$departures - arrivals,
     vac = vacQueue$departures - regQueue$departures,
-    obs = obsQueue - vacQueue$departures,
-    tot = obsQueue - arrivals 
+    obs = obsQueue$departures - vacQueue$departures,
+    tot = obsQueue$departures - arrivals 
   ) %>%
     mutate(id = row_number())  %>% 
     tidyr::pivot_longer(cols = c(rsi, reg, vac, obs, tot), names_to = 'station', values_to = 'mins')
@@ -90,33 +91,36 @@ gpModel = function(arrivals,
   sumRsi <-summary(rsiQueue)
   sumReg <-summary(regQueue)
   sumVac <-summary(vacQueue)  
-
+  sumObs <-summary(obsQueue)
+  
   dfLength <- data.frame(
     rsi = sumRsi$qlength_mean,
     reg = sumReg$qlength_mean,
-    vac = sumVac$qlength_mean
+    vac = sumVac$qlength_mean,
+    obs = sumObs$qlength_mean
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, reg, vac), names_to = 'station', values_to = 'qLengths')
+    tidyr::pivot_longer(cols = c(rsi, reg, vac, obs), names_to = 'station', values_to = 'qLengths')
   
   ## Code stations as a factor
   dfLength$station <- factor(dfLength$station,
-                             levels = c('rsi', 'reg', 'vac'), 
-                             labels = c('Preparation', 'Registration', 'Vaccination'))
+                             levels = c('rsi', 'reg', 'vac', 'obs'), 
+                             labels = c('Preparation', 'Registration', 'Vaccination', 'Observation'))
   
   
   dfUtil <- data.frame(
     rsi = sumRsi$utilization,
     reg = sumReg$utilization,
-    vac = sumVac$utilization
+    vac = sumVac$utilization,
+    obs = sumObs$utilization
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, reg, vac), names_to = 'station', values_to = 'util')
+    tidyr::pivot_longer(cols = c(rsi, reg, vac, obs), names_to = 'station', values_to = 'util')
   
   ## Code stations as a factor
   dfUtil$station <- factor(dfUtil$station,
-                           levels = c('rsi', 'reg', 'vac'), 
-                           labels = c('Preparation', 'Registration', 'Vaccination'))
+                           levels = c('rsi', 'reg', 'vac', 'obs'), 
+                           labels = c('Preparation', 'Registration', 'Vaccination', 'Observation'))
   
   
   
@@ -124,15 +128,16 @@ gpModel = function(arrivals,
   dfServers <- data.frame(
     rsi = nRsi,
     reg = nReg,
-    vac = nVac
+    vac = nVac,
+    obs = nChairs
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, reg, vac), names_to = 'station', values_to = 'nServers')
+    tidyr::pivot_longer(cols = c(rsi, reg, vac, obs), names_to = 'station', values_to = 'nServers')
   
   ## Code stations as a factor
   dfServers$station <- factor(dfServers$station,
-                              levels = c('rsi', 'reg', 'vac'), 
-                              labels = c('Preparation', 'Registration',  'Vaccination'))
+                              levels = c('rsi', 'reg', 'vac', 'obs'), 
+                              labels = c('Preparation', 'Registration', 'Vaccination', 'Observation'))
   
   output <- list(serviceTime = dfService, 
                  qTimes = dfQueue, 

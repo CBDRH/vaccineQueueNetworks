@@ -19,7 +19,7 @@ if (run_it) {
     queueDefault1[[i]] <- arenaModel(arrivals = arrivals(120, 60, 0, 5, 0.02), 
                                      duration = 8,
                                      nRsi = 4, nEnt = 8, nReg = 12, nAss = 8, 
-                                     nVac = 10)
+                                     nVac = 10, nChairs = 50)
   }
   
   # Default queue plots
@@ -33,7 +33,7 @@ if (run_it) {
   for (i in 1:20) {
     queueDefault2[[i]] <- gpModel(arrivals = arrivals(4, 10, -3, 1, 0.02), 
                                   duration = 8,
-                                  nRsi = 2, nReg = 2, nVac = 4)
+                                  nRsi = 2, nReg = 2, nVac = 4, nChairs = 10)
   }
   # Default queue plots
   queueTimes2 <- getQueueTime(queueDefault2)
@@ -108,7 +108,7 @@ if (run_it) {
   utilisationP1 <- utilTimes1 %>%
                     ggplot(aes(y = station, x = util)) +
                     annotate('rect', xmin = 0.5, xmax = 0.7, 
-                             ymin = 0.5, ymax = 5.5, 
+                             ymin = 0.5, ymax = 6.5, 
                              fill = colorHex1, alpha = 0.2) +
                     geom_boxplot( ) +
                     scale_y_discrete(NULL, 
@@ -124,7 +124,7 @@ if (run_it) {
   processingP1 <- ggplot(queueTimes1, aes(y = station, x = mins)) +
                     geom_boxplot() +
                     scale_y_discrete(NULL, 
-                                     limits = rev(levels(queueTimes1$station))[1:6]) +
+                                     limits = rev(levels(queueTimes1$station)[c(7, 2:6)])) +
                     scale_x_continuous("Processing time (minutes)", 
                                        limits = c(0, NA), 
                                        breaks = scales::pretty_breaks()) +
@@ -152,7 +152,7 @@ if (run_it) {
   utilisationP2 <- utilTimes2 %>%
     ggplot(aes(y = station, x = util)) +
     annotate('rect', xmin = 0.5, xmax = 0.7, 
-             ymin = 0.5, ymax = 3.5, fill = colorHex2, alpha = 0.2) +
+             ymin = 0.5, ymax = 4.5, fill = colorHex2, alpha = 0.2) +
     geom_boxplot( ) +
     scale_y_discrete(NULL, 
                      limits = rev(levels(utilTimes2$station))) +
@@ -167,7 +167,7 @@ if (run_it) {
   processingP2 <- ggplot(queueTimes2, aes(y = station, x = mins)) +
     geom_boxplot() +
     scale_y_discrete(NULL, 
-                     limits = rev(levels(queueTimes2$station))[1:5]) +
+                     limits = rev(levels(queueTimes2$station)[c(5, 2, 3, 4)])) +
     scale_x_continuous("Processing time (minutes)", 
                        limits = c(0, NA), 
                        breaks = scales::pretty_breaks()) +

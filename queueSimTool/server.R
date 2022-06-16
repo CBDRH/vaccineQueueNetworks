@@ -7,16 +7,16 @@ shinyServer(function(input, output, session) {
     #     if(input$hintsOn1==1){hintjs(session, options = list("hintButtonLabel"="Ok"))}
     # })
     
-    #show intro modal
-    # observeEvent("", {
-    #     showModal(modalDialog(
-    #         includeMarkdown("intro_text.md"),
-    #         size = 'l',
-    #         easyClose = TRUE,
-    #         fade = TRUE,
-    #         footer = NULL
-    #     ))
-    # })
+    # show intro modal
+    observeEvent("", {
+        showModal(modalDialog(
+            includeMarkdown("intro_text.md"),
+            size = 'l',
+            easyClose = TRUE,
+            fade = TRUE,
+            footer = NULL
+        ))
+    })
 
     ###############################################
             ### Mass vaccination ###
@@ -139,6 +139,7 @@ shinyServer(function(input, output, session) {
                                              nReg = as.numeric(input$nReg1),
                                              nAss = as.numeric(input$nAss1),
                                              nVac = as.numeric(input$nVac1),
+                                             nChairs = as.numeric(input$nChairs1),
                                              rsiDist = rsiDist1$dist(),
                                              rsiParams = rsiDist1$params(),
                                              entDist = entDist1$dist(),
@@ -191,7 +192,7 @@ shinyServer(function(input, output, session) {
             
             utilTimes1 %>%
                 ggplot(aes(y = station, x = util)) +
-                annotate('rect', xmin = 0.5, xmax = 0.7, ymin = 0.5, ymax = 5.5, fill = colorHex1, alpha = 0.2) + 
+                annotate('rect', xmin = 0.5, xmax = 0.7, ymin = 0.5, ymax = 6.5, fill = colorHex1, alpha = 0.2) + 
                 geom_boxplot( ) +
                 scale_y_discrete(NULL, limits = rev(levels(utilTimes1$station))) +
                 scale_x_continuous("Average staff utilisation factor", labels = seq(0,1,.2), limits = c(0,1), breaks = seq(0,1,.2)) +
@@ -204,7 +205,7 @@ shinyServer(function(input, output, session) {
             
             ggplot(queueTimes1, aes(y = station, x = mins)) +
                 geom_boxplot() +
-                scale_y_discrete(NULL, limits = rev(levels(queueTimes1$station))[1:6]) +
+                scale_y_discrete(NULL, limits = rev(levels(queueTimes1$station)[c(7, 2:6)])) +
                 scale_x_continuous("Processing time (minutes)", limits = c(0, NA), breaks = scales::pretty_breaks()) +
                 theme(text = element_text(size=14))
         })
@@ -383,6 +384,7 @@ shinyServer(function(input, output, session) {
                                                 nRsi = as.numeric(input$nRsi2),
                                                 nReg = as.numeric(input$nReg2),
                                                 nVac = as.numeric(input$nVac2),
+                                                nChairs = as.numeric(input$nChairs2),
                                                 rsiDist = rsiDist2$dist(),
                                                 rsiParams = rsiDist2$params(),
                                                 regDist = regDist2$dist(),
@@ -425,7 +427,7 @@ shinyServer(function(input, output, session) {
             
             utilTimes2 %>%
                 ggplot(aes(y = station, x = util)) +
-                annotate('rect', xmin = 0.5, xmax = 0.7, ymin = 0.5, ymax = 3.5, fill = colorHex2, alpha = 0.2) + 
+                annotate('rect', xmin = 0.5, xmax = 0.7, ymin = 0.5, ymax = 4.5, fill = colorHex2, alpha = 0.2) + 
                 geom_boxplot( ) +
                 scale_y_discrete(NULL, limits = rev(levels(utilTimes2$station))) +
                 scale_x_continuous("Average staff utilisation factor", labels = seq(0,1,.2), limits = c(0,1), breaks = seq(0,1,.2)) +
@@ -438,7 +440,7 @@ shinyServer(function(input, output, session) {
             
             ggplot(queueTimes2, aes(y = station, x = mins)) +
                 geom_boxplot() +
-                scale_y_discrete(NULL, limits = rev(levels(queueTimes2$station))[1:5]) +
+                scale_y_discrete(NULL, limits = rev(levels(queueTimes2$station)[c(5, 2, 3, 4)])) +
                 scale_x_continuous("Processing time (minutes)", limits = c(0, NA), breaks = scales::pretty_breaks()) +
                 theme(text = element_text(size=14))
         })

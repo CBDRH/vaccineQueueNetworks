@@ -5,6 +5,7 @@ arenaModel = function(arrivals,
                       nReg = 12,
                       nAss = 8,
                       nVac = 10,
+                      nChairs = 50,
                       rsiDist = 'exp',
                       rsiParams = list(1, 3),
                       entDist = 'exp',
@@ -81,7 +82,7 @@ arenaModel = function(arrivals,
   vacQueue <- lag_step(assQueue$departures, ass2vac) %>% wait_step(sort(rsiQueue$departures)) %>% queue_step(vacTime, nVac) # Lag step is walking time between stations
 
   ## Observation queue
-  obsQueue <- lag_step(vacQueue$departures, vac2obs) %>% lag_step(obsTime) # Lag step is walking time between stations
+  obsQueue <- lag_step(vacQueue$departures, vac2obs) %>% queue_step(obsTime, nChairs) # Lag step is walking time between stations
 
 
   # Store the service times
@@ -111,8 +112,8 @@ arenaModel = function(arrivals,
     reg = regQueue$departures - entQueue$departures,
     ass = assQueue$departures - regQueue$departures,
     vac = vacQueue$departures - assQueue$departures,
-    obs = obsQueue - vacQueue$departures,
-    tot = obsQueue - arrivals
+    obs = obsQueue$departures - vacQueue$departures,
+    tot = obsQueue$departures - arrivals
   ) %>%
     mutate(id = row_number())  %>%
     tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac, obs, tot), names_to = 'station', values_to = 'mins')
@@ -128,21 +129,23 @@ arenaModel = function(arrivals,
   sumReg <- summary(regQueue)
   sumAss <- summary(assQueue)
   sumVac <- summary(vacQueue)
+  sumObs <- summary(obsQueue)
 
   dfLength <- data.frame(
     rsi = sumRsi$qlength_mean,
     ent = sumEnt$qlength_mean,
     reg = sumReg$qlength_mean,
     ass = sumAss$qlength_mean,
-    vac = sumVac$qlength_mean
+    vac = sumVac$qlength_mean,
+    obs = sumObs$qlength_mean
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac), names_to = 'station', values_to = 'qLengths')
+    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac, obs), names_to = 'station', values_to = 'qLengths')
 
   ## Code stations as a factor
   dfLength$station <- factor(dfLength$station,
-                             levels = c('rsi', 'ent', 'reg', 'ass', 'vac'),
-                             labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination'))
+                             levels = c('rsi', 'ent', 'reg', 'ass', 'vac', 'obs'),
+                             labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination', 'Observation'))
 
 
   dfUtil <- data.frame(
@@ -150,15 +153,16 @@ arenaModel = function(arrivals,
     ent = sumEnt$utilization,
     reg = sumReg$utilization,
     ass = sumAss$utilization,
-    vac = sumVac$utilization
+    vac = sumVac$utilization,
+    obs = sumObs$utilization
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac), names_to = 'station', values_to = 'util')
+    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac, obs), names_to = 'station', values_to = 'util')
 
   ## Code stations as a factor
   dfUtil$station <- factor(dfUtil$station,
-                           levels = c('rsi', 'ent', 'reg', 'ass', 'vac'),
-                           labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination'))
+                           levels = c('rsi', 'ent', 'reg', 'ass', 'vac', 'obs'),
+                           labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination', 'Observation'))
 
 
 
@@ -168,15 +172,16 @@ arenaModel = function(arrivals,
     ent = nEnt,
     reg = nReg,
     ass = nAss,
-    vac = nVac
+    vac = nVac,
+    obs = nChairs
   ) %>%
     mutate(id = row_number())  %>%
-    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac), names_to = 'station', values_to = 'nServers')
+    tidyr::pivot_longer(cols = c(rsi, ent, reg, ass, vac, obs), names_to = 'station', values_to = 'nServers')
 
   ## Code stations as a factor
   dfServers$station <- factor(dfServers$station,
-                              levels = c('rsi', 'ent', 'reg', 'ass', 'vac'),
-                              labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination'))
+                              levels = c('rsi', 'ent', 'reg', 'ass', 'vac', 'obs'),
+                              labels = c('Preparation', 'Entrance', 'Registration', 'Assessment', 'Vaccination', 'Observation'))
   
   output <- list(serviceTime = dfService, 
                  qTimes = dfQueue, 
