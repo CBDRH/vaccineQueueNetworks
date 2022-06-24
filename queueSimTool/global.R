@@ -8,6 +8,7 @@ library(shinyTime)
 library(lubridate)
 library(rintrojs)
 library(ggpubr)
+library(markdown)
 
 # Define theme colors
 color1 <- "aqua"
